@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/iitis/LabelledGraphs.jl/badge.svg?branch=kj/initial-implementation)](https://coveralls.io/github/iitis/LabelledGraphs.jl?branch=kj/initial-implementation)
 # LabelledGraphs.jl
 
 Graphs with vertices labelled with arbitrary objects.
