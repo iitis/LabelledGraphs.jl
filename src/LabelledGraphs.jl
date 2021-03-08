@@ -97,7 +97,7 @@ module LabelledGraphs
         if any(v ∈ lg.labels for v ∈ vertices)
             throw(ArgumentError("Duplicate labels are not allowed"))
         end
-        foreach(label -> add_vertex!(lg, label), vertices)
+        add_vertex!.(Ref(lg), vertices)
     end
 
 
