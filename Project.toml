@@ -1,0 +1,4 @@
+name = "LabelledGraphs"
+uuid = "605abd48-4d17-4660-b914-d4df33194460"
+authors = ["Konrad Jałowiecki <dexter2206@gmail.com>"]
+version = "0.1.0"
