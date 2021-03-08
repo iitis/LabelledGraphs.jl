@@ -3,10 +3,8 @@ module LabelledGraphs
     using LightGraphs
     export LabelledGraph, LabelledDiGraph, LabelledEdge
 
-    abstract type AbstractLabelledGraph{T} <: AbstractGraph{T} end
 
-
-    struct LabelledGraph{S <: AbstractGraph{U} where U <: Integer, T} <: AbstractLabelledGraph{T}
+    struct LabelledGraph{S <: AbstractGraph{U} where U <: Integer, T} <: AbstractGraph{T}
         labels::Vector{T}
         inner_graph::S
         reverse_label_map::Dict{T, Integer}
