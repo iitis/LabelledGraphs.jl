@@ -278,3 +278,38 @@ for graph_type ∈ (MetaGraph, MetaDiGraph)
     @test !has_prop(lg, :title)
 end
 end
+
+for graph_type ∈ (SimpleGraph, SimpleDiGraph, MetaGraph, MetaDiGraph)
+@testset "Vertices labels are preserved when constructing induced subgraph of LabelledGraph{$graph_type}" begin
+    lg = LabelledGraph{graph_type}([10, 20, 40, 50])
+    add_edge!(lg, 40, 10)
+    add_edge!(lg, 50, 10)
+    add_edge!(lg, 20, 40)
+
+    sub_lg, vmap = induced_subgraph(lg, [10, 20, 40])
+
+    @test nv(sub_lg) == 3
+    @test vertices(sub_lg) == [10, 20, 40]
+
+    @test ne(sub_lg) == 2
+    @test has_edge(sub_lg, 20, 40)
+    @test has_edge(sub_lg, 40, 10)
+    @test vmap == [10, 20, 40]
+end
+end
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "Metainformation are correctly preserved when constructing induced subgraph of LabelledGraph{$graph_type}" begin
+    lg = LabelledGraph{graph_type}([5, 10, 15])
+    add_edge!(lg, 5, 10)
+
+    set_prop!(lg, :name, "The Ising model")
+    set_prop!(lg, 5, :x, 20)
+    set_prop!(lg, 5, 10, :y, 30)
+
+    sub_ig, vmap = induced_subgraph(lg, [10, 5])
+    @test get_prop(sub_ig, :name) == "The Ising model"
+    @test get_prop(sub_ig, 5, :x) == 20
+    @test get_prop(sub_ig, 5, 10, :y) == 30
+end
+end
