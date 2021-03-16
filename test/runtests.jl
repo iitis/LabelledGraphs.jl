@@ -1,4 +1,5 @@
 using LightGraphs
+using MetaGraphs
 using Test
 
 using LabelledGraphs
@@ -216,4 +217,21 @@ end
     lg = LabelledDiGraph(["a", "b", "c"])
     @test is_directed(lg)
     @test nv(lg) == 3
+end
+
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "LabelledGraph backed up by $graph_type can store metainformation" begin
+    lg = LabelledGraph{graph_type}([2, 5, 10])
+    add_edge!(lg, 2, 5)
+    set_prop!(lg, 2, :x, 10.0)
+    set_prop!(lg, 2, 5, :y, "test")
+    set_prop!(lg, LabelledEdge(2, 5), :z, [1, 2,3])
+    set_prop!(lg, :name, "the ising model")
+
+    @test get_prop(lg, 2, :x) == 10.0
+    @test get_prop(lg, LabelledEdge(2, 5), :z) == [1, 2, 3]
+    @test get_prop(lg, 2, 5, :y) == "test"
+    @test get_prop(lg, :name) == "the ising model"
+end
 end
