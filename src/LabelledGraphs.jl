@@ -217,6 +217,13 @@ module LabelledGraphs
         has_prop(lg.inner_graph, prop)
     end
 
+    function LightGraphs.induced_subgraph(
+        lg::LabelledGraph{S, T}, vertices::Vector{T}
+    ) where {S, T}
+        sub_ig, _vmap = induced_subgraph(lg.inner_graph, [lg.reverse_label_map[v] for v in vertices])
+        LabelledGraph(vertices, sub_ig), vertices
+    end
+
     # --- Default-type aliases ---
     LabelledGraph(labels::Vector{T}) where T = LabelledGraph{SimpleGraph}(labels)
     LabelledDiGraph(labels::Vector{T}) where T = LabelledGraph{SimpleDiGraph}(labels)
