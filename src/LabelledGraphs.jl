@@ -1,6 +1,7 @@
 module LabelledGraphs
 
     using LightGraphs
+    using MetaGraphs
     export LabelledGraph, LabelledDiGraph, LabelledEdge
 
 
@@ -98,10 +99,125 @@ module LabelledGraphs
         add_vertex!.(Ref(lg), vertices)
     end
 
+    function MetaGraphs.set_prop!(
+        lg::LabelledGraph{S, T}, v::T, prop::Symbol, val
+    ) where {S <: AbstractMetaGraph, T}
+        set_prop!(lg.inner_graph, lg.reverse_label_map[v], prop, val)
+    end
+
+    function MetaGraphs.set_prop!(
+        lg::LabelledGraph{S, T}, s::T, d::T, prop::Symbol, val
+    ) where {S <: AbstractMetaGraph, T}
+        set_prop!(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d], prop, val)
+    end
+
+    function MetaGraphs.set_prop!(
+        lg::LabelledGraph{S, T}, e::LabelledEdge, prop::Symbol, val
+    ) where {S <: AbstractMetaGraph, T}
+        set_prop!(lg, src(e), dst(e), prop, val)
+    end
+
+    function MetaGraphs.set_prop!(
+        lg::LabelledGraph{S, T}, prop::Symbol, val
+    ) where {S <: AbstractMetaGraph, T}
+        set_prop!(lg.inner_graph, prop, val)
+    end
+
+    function MetaGraphs.get_prop(
+        lg::LabelledGraph{S, T}, v::T, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        get_prop(lg.inner_graph, lg.reverse_label_map[v], prop)
+    end
+
+    function MetaGraphs.get_prop(
+        lg::LabelledGraph{S, T}, s::T, d::T, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        get_prop(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d], prop)
+    end
+
+    function MetaGraphs.get_prop(
+        lg::LabelledGraph{S, T}, e::LabelledEdge, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        get_prop(lg, src(e), dst(e), prop)
+    end
+
+    function MetaGraphs.get_prop(
+        lg::LabelledGraph{S, T}, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        get_prop(lg.inner_graph, prop)
+    end
+
+    function MetaGraphs.set_props!(
+        lg::LabelledGraph{S, T}, v::T, dict
+    ) where {S <: AbstractMetaGraph, T}
+        set_props!(lg.inner_graph, lg.reverse_label_map[v], dict)
+    end
+
+    function MetaGraphs.set_props!(
+        lg::LabelledGraph{S, T}, s::T, d::T, dict
+    ) where {S <: AbstractMetaGraph, T}
+        set_props!(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d], dict)
+    end
+
+    function MetaGraphs.set_props!(
+        lg::LabelledGraph{S, T}, e::LabelledEdge, dict
+    ) where {S <: AbstractMetaGraph, T}
+        set_props!(lg, src(e), dst(e), dict)
+    end
+
+    function MetaGraphs.set_props!(
+        lg::LabelledGraph{S, T}, dict
+    ) where {S <: AbstractMetaGraph, T}
+        set_props!(lg.inner_graph, dict)
+    end
+
+    function MetaGraphs.props(
+        lg::LabelledGraph{S, T}, v::T
+    ) where {S <: AbstractMetaGraph, T}
+        props(lg.inner_graph, lg.reverse_label_map[v])
+    end
+
+    function MetaGraphs.props(
+        lg::LabelledGraph{S, T}, s::T, d::T
+    ) where {S <: AbstractMetaGraph, T}
+        props(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d])
+    end
+
+    function MetaGraphs.props(
+        lg::LabelledGraph{S, T}, e::LabelledEdge
+    ) where {S <: AbstractMetaGraph, T}
+        props(lg, src(e), dst(e))
+    end
+
+    function MetaGraphs.props(lg::LabelledGraph{S, T})  where {S <: AbstractMetaGraph, T}
+        props(lg.inner_graph)
+    end
+
+    function MetaGraphs.has_prop(
+        lg::LabelledGraph{S, T}, v::T, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        has_prop(lg.inner_graph, lg.reverse_label_map[v], prop)
+    end
+
+    function MetaGraphs.has_prop(
+        lg::LabelledGraph{S, T}, s::T, d::T, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        has_prop(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d], prop)
+    end
+
+    function MetaGraphs.has_prop(
+        lg::LabelledGraph{S, T}, e::LabelledEdge, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        has_prop(lg, src(e), dst(e), prop)
+    end
+
+    function MetaGraphs.has_prop(
+        lg::LabelledGraph{S, T}, prop::Symbol
+    ) where {S <: AbstractMetaGraph, T}
+        has_prop(lg.inner_graph, prop)
+    end
 
     # --- Default-type aliases ---
     LabelledGraph(labels::Vector{T}) where T = LabelledGraph{SimpleGraph}(labels)
     LabelledDiGraph(labels::Vector{T}) where T = LabelledGraph{SimpleDiGraph}(labels)
-
-
 end

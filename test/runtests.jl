@@ -1,4 +1,5 @@
 using LightGraphs
+using MetaGraphs
 using Test
 
 using LabelledGraphs
@@ -216,4 +217,64 @@ end
     lg = LabelledDiGraph(["a", "b", "c"])
     @test is_directed(lg)
     @test nv(lg) == 3
+end
+
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "LabelledGraph backed up by $graph_type can store metainformation" begin
+    lg = LabelledGraph{graph_type}([2, 5, 10])
+    add_edge!(lg, 2, 5)
+    set_prop!(lg, 2, :x, 10.0)
+    set_prop!(lg, 2, 5, :y, "test")
+    set_prop!(lg, LabelledEdge(2, 5), :z, [1, 2,3])
+    set_prop!(lg, :name, "the ising model")
+
+    @test get_prop(lg, 2, :x) == 10.0
+    @test get_prop(lg, LabelledEdge(2, 5), :z) == [1, 2, 3]
+    @test get_prop(lg, 2, 5, :y) == "test"
+    @test get_prop(lg, :name) == "the ising model"
+end
+end
+
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "LabelledGraph backed up by $graph_type can store multiple metainformation at once" begin
+    lg = LabelledGraph{graph_type}([2, 5, 10])
+
+    vertex_props = Dict(:x => 10.0, :y => -1.0)
+    sd_props = Dict(:a => "test", :b => "Fortran")
+    edge_props = Dict(:u => [1, 2, 3], :v => 0)
+    graph_props = Dict(:name => "the", :title => "ising model")
+
+    add_edge!(lg, 2, 5)
+    set_props!(lg, 2, vertex_props)
+    set_props!(lg, 2, 5, sd_props)
+    set_props!(lg, LabelledEdge(2, 5), edge_props)
+    set_props!(lg, graph_props)
+
+    @test props(lg, 2) == vertex_props
+    @test props(lg, LabelledEdge(2, 5)) == merge(sd_props, edge_props)
+    @test props(lg, 2, 5) == merge(sd_props, edge_props)
+    @test props(lg) == graph_props
+end
+end
+
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "LabelledGraph backed up by $graph_type should support querying for property existence" begin
+    lg = LabelledGraph{graph_type}([2, 5, 10])
+    add_edge!(lg, 2, 5)
+    set_prop!(lg, 2, :x, 10.0)
+    set_prop!(lg, 2, 5, :y, "test")
+    set_prop!(lg, LabelledEdge(2, 5), :z, [1, 2,3])
+    set_prop!(lg, :name, "the ising model")
+
+    @test has_prop(lg, 2, :x)
+    @test !has_prop(lg, 2, :z)
+    @test has_prop(lg, LabelledEdge(2, 5), :z)
+    @test has_prop(lg, 2, 5, :y)
+    @test !has_prop(lg, 2, 5, :zenek)
+    @test has_prop(lg, :name)
+    @test !has_prop(lg, :title)
+end
 end
