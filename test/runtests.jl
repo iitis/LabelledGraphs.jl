@@ -258,3 +258,23 @@ for graph_type ∈ (MetaGraph, MetaDiGraph)
     @test props(lg) == graph_props
 end
 end
+
+
+for graph_type ∈ (MetaGraph, MetaDiGraph)
+@testset "LabelledGraph backed up by $graph_type should support querying for property existence" begin
+    lg = LabelledGraph{graph_type}([2, 5, 10])
+    add_edge!(lg, 2, 5)
+    set_prop!(lg, 2, :x, 10.0)
+    set_prop!(lg, 2, 5, :y, "test")
+    set_prop!(lg, LabelledEdge(2, 5), :z, [1, 2,3])
+    set_prop!(lg, :name, "the ising model")
+
+    @test has_prop(lg, 2, :x)
+    @test !has_prop(lg, 2, :z)
+    @test has_prop(lg, LabelledEdge(2, 5), :z)
+    @test has_prop(lg, 2, 5, :y)
+    @test !has_prop(lg, 2, 5, :zenek)
+    @test has_prop(lg, :name)
+    @test !has_prop(lg, :title)
+end
+end
