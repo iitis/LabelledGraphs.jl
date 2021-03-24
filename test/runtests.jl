@@ -4,6 +4,11 @@ using Test
 
 using LabelledGraphs
 
+@testset "LabelledEdges compare equall iff their source and destination are equal" begin
+    @test LabelledEdge((1, 1), (2, 2)) == LabelledEdge((1, 1), (2, 2))
+    @test LabelledEdge((2, 2), (1, 1)) ≠ LabelledEdge((1, 1), (2, 2))
+    @test LabelledEdge((1, 1), (2, 2)) ≠ LabelledEdge((1, 1), (3, 3))
+end
 
 for graph_type ∈ [SimpleGraph, SimpleDiGraph]
 @testset "Initializing LabelledGraph with another graph of type $graph_type" begin
