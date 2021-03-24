@@ -30,6 +30,7 @@ module LabelledGraphs
     LightGraphs.src(e::LabelledEdge{T}) where T = e.src
     LightGraphs.dst(e::LabelledEdge{T}) where T = e.dst
 
+    Base.:(==)(e1::LabelledEdge, e2::LabelledEdge) = src(e1) == src(e2) && dst(e1) == dst(e2)
 
     # --- External constructors ---
     LabelledGraph{S}(labels::Vector{T}) where T where S <: AbstractGraph =
