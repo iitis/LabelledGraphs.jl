@@ -1,7 +1,7 @@
 name = "LabelledGraphs"
 uuid = "605abd48-4d17-4660-b914-d4df33194460"
 authors = ["Konrad Jałowiecki <dexter2206@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
@@ -9,7 +9,9 @@ MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5"
 
 [compat]
 LightGraphs = "1.3"
+MetaGraphs = "0.6"
 julia = "1.5"
+
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
