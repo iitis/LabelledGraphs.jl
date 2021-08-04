@@ -9,16 +9,6 @@ module LabelledGraphs
         labels::Vector{T}
         inner_graph::S
         reverse_label_map::Dict{T, Integer}
-
-        function LabelledGraph(labels::Vector{T}, graph::S) where T where S <: AbstractGraph{U} where U <: Integer
-            if length(labels) != nv(graph)
-                throw(ArgumentError("Labels and inner graph's vertices have to be equinumerous."))
-            elseif !allunique(labels)
-                throw(ArgumentError("Labels have to be unique."))
-            else
-                new{S, T}(labels, graph, Dict(label => i for (label, i) ∈ zip(labels, vertices(graph))))
-            end
-        end
     end
 
 
@@ -33,9 +23,18 @@ module LabelledGraphs
     Base.:(==)(e1::LabelledEdge, e2::LabelledEdge) = src(e1) == src(e2) && dst(e1) == dst(e2)
 
     # --- External constructors ---
+    function LabelledGraph(labels::Vector{T}, graph::S) where T where S <: AbstractGraph{U} where U <: Integer
+        if length(labels) != nv(graph)
+            throw(ArgumentError("Labels and inner graph's vertices have to be equinumerous."))
+        elseif !allunique(labels)
+            throw(ArgumentError("Labels have to be unique."))
+        else
+            LabelledGraph{S, T}(labels, graph, Dict(label => i for (label, i) ∈ zip(labels, vertices(graph))))
+        end
+    end
+
     LabelledGraph{S}(labels::Vector{T}) where T where S <: AbstractGraph =
         LabelledGraph(labels, S(length(labels)))
-
 
     # --- Querying vertices ---
     LightGraphs.nv(g::LabelledGraph) = length(g.labels)
