@@ -8,7 +8,7 @@ module LabelledGraphs
     struct LabelledGraph{S <: AbstractGraph{U} where U <: Integer, T} <: AbstractGraph{T}
         labels::Vector{T}
         inner_graph::S
-        reverse_label_map::Dict{T, Integer}
+        reverse_label_map::Dict{T, <:Integer}
     end
 
 
