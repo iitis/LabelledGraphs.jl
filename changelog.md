@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/iitis/LabelledGraphs.jl/compare/v0.4.2...v0.4.3) (2022-02-20)
+
+
+### Bug Fixes
+
+* Add missing GITHUB_TOKEN env variable ([3faa2df](https://github.com/iitis/LabelledGraphs.jl/commit/3faa2df0ed052cc7079b40f8d8a73ded3edda39c))
+
+
+
 ## [0.4.2](https://github.com/iitis/LabelledGraphs.jl/compare/v0.4.1...v0.4.2) (2022-02-20)
 
 
