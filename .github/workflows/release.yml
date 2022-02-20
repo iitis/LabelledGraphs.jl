@@ -1,0 +1,23 @@
+name: Release package
+on: workflow_dispatch
+
+
+jobs:
+  release:
+    steps:
+      - name: Generate changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-message: 'chore(release): {version}'
+          tag-prefix: 'v'
+          output-file: 'changelog.md'
+          release-count: '1000'
+          version-file: './Project.toml' // or .yml, .yaml, .toml
+          version-path: 'version'
+      - name: Register version
+        uses: julia-actions/RegisterAction@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ steps.changelog.version }}
