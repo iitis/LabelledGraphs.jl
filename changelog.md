@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/iitis/LabelledGraphs.jl/compare/v0.4.0...v0.4.1) (2022-02-20)
+
+
+### Bug Fixes
+
+* Change comment message to correct registrator-triggering message ([d5d6f1d](https://github.com/iitis/LabelledGraphs.jl/commit/d5d6f1dc163465c2b171cb93e5446623034819c1))
+
+
+
 # [0.4.0](https://github.com/iitis/LabelledGraphs.jl/compare/v0.3.3...v0.4.0) (2022-02-20)
 
 
