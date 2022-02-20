@@ -14,7 +14,7 @@ jobs:
           tag-prefix: 'v'
           output-file: 'changelog.md'
           release-count: '1000'
-          version-file: './Project.toml' // or .yml, .yaml, .toml
+          version-file: './Project.toml'
           version-path: 'version'
       - name: Register version
         uses: julia-actions/RegisterAction@latest
