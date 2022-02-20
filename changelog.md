@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/iitis/LabelledGraphs.jl/compare/v0.3.3...v0.4.0) (2022-02-20)
+
+
+### Bug Fixes
+
+* typo in workflow ([0125e1a](https://github.com/iitis/LabelledGraphs.jl/commit/0125e1ac8251d1de7beb39b6e40e45da22780641))
+
+
+### Features
+
+* Add manual test comment step ([426f4c4](https://github.com/iitis/LabelledGraphs.jl/commit/426f4c484be7801af88ad674bbab617c684af63f))
+
+
+
 ## [0.3.3](https://github.com/iitis/LabelledGraphs.jl/compare/v0.3.0...v0.3.3) (2022-02-20)
 
 
