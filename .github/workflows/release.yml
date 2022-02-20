@@ -28,4 +28,4 @@ jobs:
         with:
           body: |
             This is a test
-          sha: ${{ git.sha_short }}
+          sha: ${{ steps.git.outputs.sha_short }}
