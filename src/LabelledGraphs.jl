@@ -165,15 +165,11 @@ module LabelledGraphs
         set_props!(lg, src(e), dst(e), dict)
     end
 
-    function MetaGraphs.set_props!(
-        lg::LabelledGraph{S, T}, dict
-    ) where {S <: AbstractMetaGraph, T}
+    function MetaGraphs.set_props!(lg::LabelledGraph{S, T}, dict) where {S <: AbstractMetaGraph, T}
         set_props!(lg.inner_graph, dict)
     end
 
-    function MetaGraphs.props(
-        lg::LabelledGraph{S, T}, v::T
-    ) where {S <: AbstractMetaGraph, T}
+    function MetaGraphs.props(lg::LabelledGraph{S, T}, v::T) where {S <: AbstractMetaGraph, T}
         props(lg.inner_graph, lg.reverse_label_map[v])
     end
 
