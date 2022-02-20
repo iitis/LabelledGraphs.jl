@@ -26,6 +26,8 @@ jobs:
       - uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Trigger registrator
         uses: peter-evans/commit-comment@v1
         with:
