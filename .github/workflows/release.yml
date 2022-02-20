@@ -18,8 +18,14 @@ jobs:
           release-count: '1000'
           version-file: './Project.toml'
           version-path: 'version'
-      - name: Register version
-        uses: julia-actions/RegisterAction@latest
+      - name: Extract last commit's ref
+        id: git
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Trigger registrator
+        uses: peter-evans/commit-comment@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ steps.changelog.version }}
+          body: |
+            This is a test
+          sha: ${{ git.sha_short }}
