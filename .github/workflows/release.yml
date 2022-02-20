@@ -23,6 +23,9 @@ jobs:
         shell: bash
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
       - name: Trigger registrator
         uses: peter-evans/commit-comment@v1
         with:
