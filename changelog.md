@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/iitis/LabelledGraphs.jl/compare/v0.4.1...v0.4.2) (2022-02-20)
+
+
+### Bug Fixes
+
+* Temporarily remove tag after creating changelog ([2bad23b](https://github.com/iitis/LabelledGraphs.jl/commit/2bad23b52272b1380793ce5bfb40382ea387a1dc))
+
+
+
 ## [0.4.1](https://github.com/iitis/LabelledGraphs.jl/compare/v0.4.0...v0.4.1) (2022-02-20)
 
 
