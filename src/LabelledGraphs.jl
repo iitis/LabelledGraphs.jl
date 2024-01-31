@@ -1,6 +1,6 @@
 module LabelledGraphs
 
-    using LightGraphs
+    using Graphs
     using MetaGraphs
     export LabelledGraph, LabelledDiGraph, LabelledEdge
 
@@ -17,8 +17,8 @@ module LabelledGraphs
         dst::T
     end
 
-    LightGraphs.src(e::LabelledEdge{T}) where T = e.src
-    LightGraphs.dst(e::LabelledEdge{T}) where T = e.dst
+    Graphs.src(e::LabelledEdge{T}) where T = e.src
+    Graphs.dst(e::LabelledEdge{T}) where T = e.dst
 
     Base.:(==)(e1::LabelledEdge, e2::LabelledEdge) = src(e1) == src(e2) && dst(e1) == dst(e2)
 
@@ -37,53 +37,53 @@ module LabelledGraphs
         LabelledGraph(labels, S(length(labels)))
 
     # --- Querying vertices ---
-    LightGraphs.nv(g::LabelledGraph) = length(g.labels)
+    Graphs.nv(g::LabelledGraph) = length(g.labels)
 
-    LightGraphs.vertices(g::LabelledGraph) = g.labels
+    Graphs.vertices(g::LabelledGraph) = g.labels
 
-    LightGraphs.has_vertex(g::LabelledGraph, v) = v in g.labels
+    Graphs.has_vertex(g::LabelledGraph, v) = v in g.labels
 
 
     # --- Querying edges ---
-    LightGraphs.ne(g::LabelledGraph) = ne(g.inner_graph)
+    Graphs.ne(g::LabelledGraph) = ne(g.inner_graph)
 
-    LightGraphs.edges(g::LabelledGraph) =
+    Graphs.edges(g::LabelledGraph) =
         map(e -> LabelledEdge(g.labels[src(e)], g.labels[dst(e)]), edges(g.inner_graph))
 
-    LightGraphs.has_edge(g::LabelledGraph, s, d) =
+    Graphs.has_edge(g::LabelledGraph, s, d) =
         has_vertex(g, s) &&
         has_vertex(g, d) &&
         has_edge(g.inner_graph, g.reverse_label_map[s], g.reverse_label_map[d])
 
-    LightGraphs.has_edge(g::LabelledGraph, e::LightGraphs.AbstractEdge) =
+    Graphs.has_edge(g::LabelledGraph, e::Graphs.AbstractEdge) =
         has_edge(g, src(e), dst(e))
 
 
     # --- Querying neighborhoods ---
-    LightGraphs.outneighbors(g::LabelledGraph{S, T}, v::T) where S where T =
+    Graphs.outneighbors(g::LabelledGraph{S, T}, v::T) where S where T =
         [g.labels[u] for u ∈ outneighbors(g.inner_graph, g.reverse_label_map[v])]
 
-    LightGraphs.inneighbors(g::LabelledGraph{S, T}, v::T) where S where T =
+    Graphs.inneighbors(g::LabelledGraph{S, T}, v::T) where S where T =
         [g.labels[u] for u ∈ inneighbors(g.inner_graph, g.reverse_label_map[v])]
 
-    LightGraphs.all_neighbors(g::LabelledGraph{S, T}, v::T) where S where T =
+    Graphs.all_neighbors(g::LabelledGraph{S, T}, v::T) where S where T =
         collect(union(Set(inneighbors(g, v)), Set(outneighbors(g, v))))
 
 
     # --- Querying other graph properties ---
-    LightGraphs.is_directed(::Type{LabelledGraph{S, T}}) where S where T = is_directed(S)
+    Graphs.is_directed(::Type{LabelledGraph{S, T}}) where S where T = is_directed(S)
 
 
     # --- Mutations ---
     # Warning: this might need further adjustments if we incorporate support for static graphs,
     # as they are immutable.
-    LightGraphs.add_edge!(lg::LabelledGraph{S, T}, s::T, d::T) where S where T =
+    Graphs.add_edge!(lg::LabelledGraph{S, T}, s::T, d::T) where S where T =
         add_edge!(lg.inner_graph, lg.reverse_label_map[s], lg.reverse_label_map[d])
 
-    LightGraphs.add_edge!(lg::LabelledGraph{S, T}, e::AbstractEdge{T}) where S where T =
+    Graphs.add_edge!(lg::LabelledGraph{S, T}, e::AbstractEdge{T}) where S where T =
         add_edge!(lg, src(e), dst(e))
 
-    function LightGraphs.add_vertex!(lg::LabelledGraph{S, T}, v::T) where S where T
+    function Graphs.add_vertex!(lg::LabelledGraph{S, T}, v::T) where S where T
         if v ∈ lg.labels
             throw(ArgumentError("Duplicate labels are not allowed"))
         end
@@ -92,7 +92,7 @@ module LabelledGraphs
         push!(lg.reverse_label_map, v => nv(lg.inner_graph))
     end
 
-    function LightGraphs.add_vertices!(lg::LabelledGraph{S, T}, vertices::Vector{T}) where S where T
+    function Graphs.add_vertices!(lg::LabelledGraph{S, T}, vertices::Vector{T}) where S where T
         if any(v ∈ lg.labels for v ∈ vertices)
             throw(ArgumentError("Duplicate labels are not allowed"))
         end
@@ -213,7 +213,7 @@ module LabelledGraphs
         has_prop(lg.inner_graph, prop)
     end
 
-    function LightGraphs.induced_subgraph(
+    function Graphs.induced_subgraph(
         lg::LabelledGraph{S, T}, vertices::Vector{T}
     ) where {S, T}
         sub_ig, _vmap = induced_subgraph(lg.inner_graph, [lg.reverse_label_map[v] for v in vertices])
