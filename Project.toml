@@ -1,7 +1,7 @@
 name = "LabelledGraphs"
 uuid = "605abd48-4d17-4660-b914-d4df33194460"
 authors = ["Konrad Jałowiecki <dexter2206@gmail.com>", "Łukasz Pawela <lukasz.pawela@gmail.com>"]
-version = "0.4.3"
+version = "0.4.4"
 
 [deps]
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
